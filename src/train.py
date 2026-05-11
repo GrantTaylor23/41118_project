@@ -2,13 +2,6 @@ import gymnasium as gym
 from stable_baselines3 import PPO
 from stable_baselines3.common.env_util import make_vec_env
 
-# class BipedalRewardWrapper(gym.RewardWrapper):
-#     def reward(self, reward):
-#         # Soften the fall penalty drastically during early learning
-#         if reward <= -100:
-#             return -1   # still negative, but not catastrophic
-#         return reward
-
 class BipedalRewardWrapper(gym.RewardWrapper):  # ← inherit from gymnasium
     def reward(self, reward):
         if reward <= -100:
