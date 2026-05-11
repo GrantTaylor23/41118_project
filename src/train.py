@@ -2,14 +2,32 @@ import gymnasium as gym
 from stable_baselines3 import PPO
 from stable_baselines3.common.env_util import make_vec_env
 
+OBSTACLE_PENALTY = -25 # big penalty for hitting obstacle
+GOAL_REWARD = 100    # big reward for reaching goal
+STEP_PENALTY = -0.05 # Penalises more steps
+PROGRESS_REWARD_SCALE = 10.1 # multiples negative or positive reward for movement
+MINIMUM_SAFE_DISTANCE = 1.0
+
 class BipedalRewardWrapper(gym.RewardWrapper):  # ← inherit from gymnasium
     def reward(self, reward):
         if reward <= -100:
             return -1.0
         return reward
+    
+    def step(self, action):
+        obs, reward, terminated, truncated, info = self.env.step(action)
+        
+        # Now you can use obs, action, AND reward together
+        forward_velocity = obs[2]  # BipedalWalker specific
+        if reward <= -100:
+            reward = -1.0
+        else:
+            reward += forward_velocity * PROGRESS_REWARD_SCALE  # reward speed
+
+        return obs, reward, terminated, truncated, info
 
 def make_env():
-    return BipedalRewardWrapper(gym.make("BipedalWalker-v3", hardcore=True, render_mode="rgb_array"))
+    return BipedalRewardWrapper(gym.make("BipedalWalker-v3", render_mode="rgb_array"))
 
 env = make_vec_env(make_env, n_envs=4)
 
@@ -32,5 +50,5 @@ model = PPO(
     verbose=1
 )
 
-model.learn(total_timesteps=10_000)
+model.learn(total_timesteps=100_000)
 model.save("../model/bipedal_ppo")
