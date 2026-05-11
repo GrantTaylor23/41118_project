@@ -1,0 +1,43 @@
+import gymnasium as gym
+from stable_baselines3 import PPO
+from stable_baselines3.common.env_util import make_vec_env
+
+# class BipedalRewardWrapper(gym.RewardWrapper):
+#     def reward(self, reward):
+#         # Soften the fall penalty drastically during early learning
+#         if reward <= -100:
+#             return -1   # still negative, but not catastrophic
+#         return reward
+
+class BipedalRewardWrapper(gym.RewardWrapper):  # ← inherit from gymnasium
+    def reward(self, reward):
+        if reward <= -100:
+            return -1.0
+        return reward
+
+def make_env():
+    return BipedalRewardWrapper(gym.make("BipedalWalker-v3", hardcore=True, render_mode="rgb_array"))
+
+env = make_vec_env(make_env, n_envs=4)
+
+# # Option 2: pass a factory function (needed when using a wrapper)
+# def make_env():
+#     return gym.make("BipedalWalker-v3", hardcore=True, render_mode="rgb_array")
+
+# env = make_vec_env(make_env, n_envs=4)
+
+# Vectorised envs run multiple copies in parallel — speeds up on-policy training
+# env = make_vec_env(env, n_envs=4)
+
+model = PPO(
+    "MlpPolicy",       # MlpPolicy is standard neural network (Multi-Layer Percerption)
+    env,
+    n_steps=2048,      # steps per env before each update
+    batch_size=64,
+    learning_rate=3e-4,
+    ent_coef=0.005,    # small entropy bonus encourages exploration
+    verbose=1
+)
+
+model.learn(total_timesteps=10_000)
+model.save("../model/bipedal_ppo")
