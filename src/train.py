@@ -7,6 +7,7 @@ GOAL_REWARD = 100    # big reward for reaching goal
 STEP_PENALTY = -0.1 # Penalises more steps
 PROGRESS_REWARD_SCALE = 5 # multiples negative or positive reward for movement
 STILL_ALIVE_REWARD = 0
+TOTAL_TIMESTEPS = 100_000
 
 class BipedalRewardWrapper(gym.RewardWrapper):  # ← inherit from gymnasium
 
@@ -57,8 +58,10 @@ model = PPO(
     batch_size=64,
     learning_rate=3e-4,
     ent_coef=0.05,    # small entropy bonus encourages exploration
-    verbose=1
+    verbose=1,
+    tensorboard_log="./ppo_tensorboard/"
 )
 
-model.learn(total_timesteps=100_000)
+model = PPO.load("../model/bipedal_ppo", env=env)
+model.learn(total_timesteps=TOTAL_TIMESTEPS)
 model.save("../model/bipedal_ppo")
