@@ -339,11 +339,19 @@
   <div class="section-label">01 — Abstract</div>
   <h2>Overview</h2>
   <p>
-    This project aims to teahc a bipedal walker agent to walk using reinforcement learning.
+    This project will use a gymnasium environment with a bipedal walker in a 2d environment. 
+    Using wrapper functions to interface with the agent, we will use a PPO model of reinforcement 
+    learning to teach the robot to navigate a terrain. Firstly navigating a simple flat terrain, 
+    before attempting a more difficult terrain with hills and obstacles.
   </p>
+    The observation space is what is returned by the environment and can be used to reward the agent 
+    for moves which we determine are positive or negative. The agent has 24 observations which describe 
+    the movement of the hull of the robot and each of its two, two jointed legs. The agent also returns 10 
+    lidar measurements which can be used to examine the environment.
   <p>
-    ENTER ADDITIONAL ABSTRACT TEXT HERE if needed. You can describe your methodology, training setup, or key results in this second paragraph.
-  </p>
+    The action space contains the variables which the agent can change and experiment with to learn to walk. 
+    These values are throttles for motors in the hip and knee joints of the legs which range from -1 to 1. 
+  <p>
 </section>
 
 <!-- TEAM -->
@@ -403,9 +411,6 @@
   </p>
   <p>
     ENTER FURTHER DISCUSSION HERE. You might discuss hyperparameter sensitivity, comparison to baselines, limitations of your approach, or unexpected behaviours observed in the walker.
-  </p>
-  <p>
-    ENTER FUTURE WORK HERE. Describe potential extensions or improvements to the project, such as alternative algorithms, reward shaping strategies, or environment modifications.
   </p>
 </section>
 
