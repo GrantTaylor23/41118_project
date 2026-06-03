@@ -32,8 +32,8 @@ To watch the tensor board, run:
 ``` 
 tensorboard --logdir=./ppo_tensorboard/
 ``` 
-Important note:
-Edit "hardcore=True" in both training file and watch file "env" definition, to test or watch model in flat or obstacle world.
-Edit "model = PPO.load("model")" where "model" is the directory for the agent you want to watch. For example "model = PPO.load("../model/bipedal_ppo_Jumping_hardmode_V2")"
+Important note:<br/>
+Edit "hardcore=True" in both training file and watch file "env" definition, to test or watch model in flat or obstacle world.<br/>
+Edit "model = PPO.load("model")" where "model" is the directory for the agent you want to watch. For example:<br/> "model = PPO.load("../model/bipedal_ppo_Jumping_hardmode_V2")"
 
 
