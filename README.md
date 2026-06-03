@@ -1,7 +1,7 @@
 # 41118 Project Team 6
 
 ## Resources
-Setting up a virtual environment:<br/>  
+Setting up a virtual environment:<br/>
 https://www.w3schools.com/python/python_virtualenv.asp<br/>
 More information on the original Gymnasium Environment <br/>
 https://gymnasium.farama.org/environments/box2d/bipedal_walker/
